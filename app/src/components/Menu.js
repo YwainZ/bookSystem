@@ -1,31 +1,15 @@
 import { Menu, Icon } from "antd";
 import React from "react";
 import { hashHistory } from "react-router";
-import { Pagination } from "antd";
-import { Card } from "antd";
-import fetch from 'isomorphic-fetch';
-import API_CONFIG from '../config/config';
-const { Meta } = Card;
+
 const SubMenu = Menu.SubMenu;
 
 class MenuDetail extends React.Component {
-  componentDidMount(){
-    this.getBookInfo();
-  }
-  getBookInfo(){
-   fetch(API_CONFIG.baseUrl+'/book/books?pageIndex=1&pageSize=10',{
-     method:'GET',
-     mode:'cors',
-     credentials:'include',
-     headers:{
-      'Content-Type': 'application/json',
-    }
-   }).then(res =>{
-     console.log(res)
-   })
-  }
   handleClick(e) {
-    if (e === "sub2") {
+    if(e === "sub1"){
+       hashHistory.push("/book");
+    }
+    else if (e === "sub2") {
       hashHistory.push("/upload");
     } else if (e === "sub3") {
       hashHistory.push("/info");
@@ -33,15 +17,11 @@ class MenuDetail extends React.Component {
       hashHistory.push("/about");
     }
   }
-  onChange(pageNumber) {
-    console.log("Page: ", pageNumber);
-  }
   render() {
     return (
-      <div style={{ height: "100%" }}>
         <Menu
           theme="dark"
-          style={{ width: 256, height: "100%", float: "left" }}
+          style={{ width: 256, height: "100%"}}
           mode="vertical"
         >
           <SubMenu
@@ -100,29 +80,6 @@ class MenuDetail extends React.Component {
             onTitleClick={this.handleClick.bind(this, "sub5")}
           />
         </Menu>
-        <div style={{ float: "left", marginLeft: "20px", height: "100%" }}>
-          <Card
-            hoverable
-            style={{ width: 240 }}
-            cover={
-              <img
-                alt="example"
-                src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-              />
-            }
-          >
-            <Meta title="Europe Street beat" description="www.instagram.com" />
-          </Card>
-          <div style={{ position: "fixed", bottom: 0 }}>
-            <Pagination
-              showQuickJumper
-              defaultCurrent={2}
-              total={500}
-              onChange={this.onChange}
-            />
-          </div>
-        </div>
-      </div>
     );
   }
 }

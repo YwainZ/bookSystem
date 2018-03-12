@@ -4,7 +4,10 @@ import Menu from '../components/Menu';
 class About extends React.Component{
   render(){
     return (
-      <div>zheshi About</div>
+      <div style={{display:'flex',justifyContent:'flex-start'}}>
+      <Menu/>
+      <div style={{border:'1px solid red'}}> zheshi About</div>
+      </div>
     )
   }
 }

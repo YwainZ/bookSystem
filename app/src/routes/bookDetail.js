@@ -4,6 +4,7 @@ import API_CONFIG from "../config/config";
 import { Pagination } from "antd";
 import { Card } from "antd";
 import { Input } from "antd";
+import {message} from "antd";
 const Search = Input.Search;
 
 const { Meta } = Card;
@@ -14,22 +15,28 @@ class bookDetail extends React.Component {
     this.state = {
       imgSrc: "",
       imgTitle: "",
-      pageNum: 1
     };
 
   }
 
-  onChange(pageNumber,pageSize) {
+  onChange = (pageNumber,pageSize) => {
     console.log("Page: ", pageNumber);
-    this.setState({ pageNum: pageNumber }).bind(this);
-
+    var contain = document.getElementById("cardBox");
+    var card = document.getElementById('card');
+    card.style.display = 'block'
+    contain.innerHTML = "";
+    contain.appendChild(card);
+    this.getBookInfo(pageNumber);
   }
   componentDidMount() {
-
+    console.log()
     this.getBookInfo();
   }
-  getBookInfo() {
-    fetch(API_CONFIG.baseUrl + "/book/books?pageIndex="+this.state.pageNum+"&pageSize=10", {
+  getBookInfo(pageNumber) {
+    if(pageNumber===undefined||pageNumber===0||pageNumber===null){
+       pageNumber = 1;
+    }
+    fetch(API_CONFIG.baseUrl + "/book/books?pageIndex="+pageNumber+"&pageSize=10", {
       method: "GET",
       mode: "cors",
       credentials: "include",
@@ -42,10 +49,15 @@ class bookDetail extends React.Component {
         return res.json();
       })
       .then(data => {
-        var contain = document.getElementById("contain");
+        this.setState({res:data})
+        var contain = document.getElementById("cardBox");
         var card = document.getElementById("card");
         let arr = data.data;
         console.log(arr);
+        if(arr ===undefined||arr.length===0){
+          card.style.display = 'none';
+          message.error("暂无更多图书")
+        }
         this.setState({ imgTitle: arr[0].bookName });
         this.setState({ imgSrc: arr[0].coverUrl });
         for (let i = 1; i < arr.length; i++) {
@@ -70,8 +82,35 @@ class bookDetail extends React.Component {
   handleClick(e) {
     console.log(e);
   }
+  onSearch = (id)=>{
+    console.log(id)
+     fetch(API_CONFIG.baseUrl+'/book/books/'+id+'/info',{
+      method: 'GET',
+      mode:'cors',
+      credentials:'include',
+      headers:{
+        "Content-type":"application/json"
+      }
+    }).then(res =>{
+      return res.json();
+    }).then(data =>{
+      console.log(data.data.book.bookName)
+      var info = data.data.book;
+      var contain = document.getElementById("cardBox");
+      var card = document.getElementById("card");
+      contain.innerHTML = "";
+      contain.appendChild(card);
+      this.setState({imgTitle:info.bookName});
+      this.setState({imgSrc:info.coverUrl});
+
+
+
+
+    })
+  }
 
   render() {
+
     return (
       <div style={{ display: "flex", justifyContent: "flex-start" }}>
         <div style={{ width: 256 }}>
@@ -79,16 +118,16 @@ class bookDetail extends React.Component {
         </div>
         <div
           id="contain"
-          style={{ height: "1000px", border: "1px solid black" }}
+          style={{ width:'90%',height: "1000px", border: "1px solid black" }}
         >
           <div style={{margin:'10px'}}>
             <Search style={{width:'25%'}}
               placeholder="搜索图书"
-              onSearch={value => console.log(value)}
+              onSearch={this.onSearch}
               enterButton
             />
           </div>
-          <div>
+          <div id="cardBox">
             <Card
               id="card"
               hoverable
@@ -103,14 +142,13 @@ class bookDetail extends React.Component {
                 />
               }
             >
-              <Meta title={this.state.imgTitle} />
+            <Meta title={this.state.imgTitle} />
             </Card>
           </div>
           <div
             style={{
-              border: "1px solid red",
               position: "absolute",
-              bottom: "-250px",
+              bottom: "-300px",
               left: "500px"
             }}
           >

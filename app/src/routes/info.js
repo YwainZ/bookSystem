@@ -1,9 +1,14 @@
 import React from 'react';
 import Menu from '../components/Menu';
+import UserInfo from '../components/userInfo';
  class Info  extends React.Component{
    render(){
      return (
-     <Menu/>
+       <div>
+       <Menu/>
+       <UserInfo/>
+       </div>
+
      )
    }
  }

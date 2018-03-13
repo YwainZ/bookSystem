@@ -5,7 +5,9 @@ import moment from 'moment';
 import 'moment/locale/zh-cn';
 import fetch from 'isomorphic-fetch';
 import API_CONFIG from '../config/config';
+import { message} from 'antd';
 import { hashHistory } from 'react-router';
+
 
 
 const FormItem = Form.Item;
@@ -13,28 +15,52 @@ const FormItem = Form.Item;
 moment.locale('zh-cn');
 
 class NormalLoginForm extends React.Component {
+constructor(props){
+  super(props);
+  this.state={
+    rem:false
+  }
 
+}
   handleSubmit = (e) => {
     e.preventDefault();
+    console.log('hahahh'+this.state.rem)
     this.props.form.validateFields((err, values) => {
       fetch(API_CONFIG.baseUrl+'/user/login',{
         mode:'cors',
         credentials:'include',
         method:'POST',
+        save:this.state.rem,
         body:JSON.stringify(values),
         headers:{
           'Content-Type': 'application/json',
         }
       }).then(res =>{
-        if(res.status===200){
+        return res.json()
+      }).then(res =>{
+        console.log(res)
+        if(res.code===0){
+          message.success("登录成功")
          hashHistory.push('/book')
+        }else{
+          message.error(res.msg)
         }
       }).catch(e =>{
-        console.log()
+        message.error('登录失败')
+        console.log(e)
       })
 
 
     });
+  }
+  handleClick(){
+    hashHistory.push('/register')
+  }
+  onAddClick = (e) =>{
+    console.log(e.target.checked)
+    if(e.target.checked===true){
+         this.setState({rem:true})
+    }
   }
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -42,9 +68,9 @@ class NormalLoginForm extends React.Component {
       <Form onSubmit={this.handleSubmit} className="login-form" style={{width:'300px'}} locale={zhCN}>
         <FormItem>
           {getFieldDecorator('username', {
-            rules: [{ required: true, message: '请输入您的用户名!' }],
+            rules: [{ required: true, message: '请输入您的学号!' }],
           })(
-            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="用户名" />
+            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="学号" />
           )}
         </FormItem>
         <FormItem>
@@ -56,13 +82,13 @@ class NormalLoginForm extends React.Component {
         </FormItem>
         <FormItem>
 
-          <Checkbox >记住密码</Checkbox>
+          <Checkbox onChange={this.onAddClick} >记住密码</Checkbox>
 
-          <a className="login-form-forgot" href="" style={{float: 'right'}}>忘记密码</a>
+          <a className="login-form-forgot" href="" style={{float: 'right'}} >忘记密码</a>
           <Button type="primary" htmlType="submit" className="login-form-button" style={{width: '100%'}}>
             登陆
           </Button>
-           <a href="">立即注册</a>
+         <a onClick={this.handleClick}>立即注册</a>
         </FormItem>
       </Form>
     );

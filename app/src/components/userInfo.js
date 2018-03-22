@@ -1,8 +1,16 @@
 import React from 'react';
 import API_CONFIG from '../config/config';
 import fetch from 'isomorphic-fetch';
+import { Table } from 'antd';
 
  class UserInfo extends React.Component{
+   constructor(props){
+     super(props);
+     this.state={
+      user:[]
+
+     }
+   }
    componentDidMount(){
      this.getUserInfo();
    }
@@ -17,13 +25,22 @@ import fetch from 'isomorphic-fetch';
      }).then(res =>{
        return res.json()
      }).then(res =>{
-       console.log(res.data)
+       this.setState({user:[res.data]})
+       Object.assign(this.state.user[0],{key:'20'})
+     }).catch(e =>{
+       console.log(e);
      })
    }
+   columns=[
+  { title: '学号', dataIndex: 'username', key: 'username' },
+   { title: '昵称', dataIndex: 'nickname', key: 'nickname' },
+   { title: '邮箱', dataIndex: 'mail', key: 'mail' },]
     render(){
       return(
         <div>
-        <p></p>
+     <Table   columns={this.columns}
+ expandedRowRender={record => <p style={{ margin: 0 }}>{record.description}</p>}
+ dataSource={this.state.user}></Table>
         </div>
       )
     }

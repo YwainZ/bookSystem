@@ -8,7 +8,7 @@ class Uploaded extends React.Component{
        <div >
        <Menu/>
        </div>
-       <div style={{height:'700px',margin:30,width:'700px'}}>
+       <div style={{height:'50rem',margin:30,width:'90%'}}>
        <TableInfo />
        </div>
        </div>

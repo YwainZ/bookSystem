@@ -1,12 +1,49 @@
 import { Menu, Icon } from "antd";
 import React from "react";
 import { hashHistory } from "react-router";
+import { Modal } from 'antd';
+import fetch from 'isomorphic-fetch';
+import API_CONFIG from '../config/config';
+import {message} from 'antd'
+const confirm = Modal.confirm;
 
 const SubMenu = Menu.SubMenu;
 
 class MenuDetail extends React.Component {
+  showConfirm() {
+    confirm({
+      title: '确定要退出登录吗?',
+      onOk() {
+       fetch(API_CONFIG.baseUrl+'/user/logout',{
+         method:'GET',
+         credentials:'include',
+         mode:'cors',
+         headers:{
+           "Content-type":"application/json"
+         }
+       }).then(res =>{
+         return res.json();
+       }).then(res =>{
+         if(res.code === 0){
+          message.success(res.data)
+          hashHistory.push("/")
+         }
+         else{
+           message.error(res.msg)
+         }
+         console.log(res)
+       }).catch(e =>{
+         console.log(e)
+       })
+
+      },
+      onCancel() {
+      },
+    });
+  }
   handleClick(e) {
     if(e === "sub1"){
+       hashHistory.replace("");
        hashHistory.push("/book");
     }
     else if (e === "sub2") {
@@ -14,7 +51,9 @@ class MenuDetail extends React.Component {
     } else if (e === "sub3") {
       hashHistory.push("/info");
     } else if (e === "sub4") {
-      hashHistory.push("/about");
+      hashHistory.push("/uploaded");
+    }else if(e === "sub5"){
+
     }
   }
   render() {
@@ -63,7 +102,7 @@ class MenuDetail extends React.Component {
             title={
               <span>
                 <Icon type="link" />
-                <span>关于我们</span>
+                <span>已上传图书</span>
               </span>
             }
             onTitleClick={this.handleClick.bind(this, "sub4")}
@@ -77,7 +116,7 @@ class MenuDetail extends React.Component {
                 <span>退出登录</span>
               </span>
             }
-            onTitleClick={this.handleClick.bind(this, "sub5")}
+            onTitleClick={this.showConfirm}
           />
         </Menu>
     );

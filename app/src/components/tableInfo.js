@@ -55,8 +55,9 @@ class TableInfo extends React.Component{
   }
  columns = [
   { title: '书名', dataIndex: 'bookName', key: 'bookName' },
-  { title: '上传者', dataIndex: 'nickname', key: 'nickname' },
-  { title: '操作', dataIndex: '', key: 'x', render: (item) => <a onClick={() =>{this.onClick(item)}}>Delete</a> },
+  { title: '上传时间', dataIndex: 'createTime', key: 'createTime' },
+  { title: '下载量', dataIndex: 'downloadCount', key: 'downloadCount' },
+  { title: '操作', dataIndex: '', key: 'x', render: (item) => <a onClick={() =>{this.onClick(item)}}>删除</a> },
 ];
 
 render(){

@@ -4,9 +4,13 @@ import UserInfo from '../components/userInfo';
  class Info  extends React.Component{
    render(){
      return (
+       <div style={{display:'flex',justifyContent:'flex-start'}}>
        <div>
        <Menu/>
-       <UserInfo/>
+       </div>
+       <div style={{margin:20,width:'90%',height:'50rem'}}>
+       <UserInfo />
+       </div>
        </div>
 
      )

@@ -10,6 +10,8 @@ class UploadButton extends React.Component{
   this.methods = {
     methods:'POST',
     multiple: true,
+    name:'book',
+    withCredentials: true,
     action: API_CONFIG.baseUrl+'/book/books',
     onChange(info) {
       console.log(info.fileList[0]);

@@ -33,16 +33,16 @@ npm test
 
 ### 效果图展示
 #### 登录首页
-![index-w300](https://upload-images.jianshu.io/upload_images/9381131-08bae8c01137b65b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![index-w200](https://upload-images.jianshu.io/upload_images/9381131-08bae8c01137b65b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 #### 图书列表
-![book-w300](https://upload-images.jianshu.io/upload_images/9381131-78f431d2f872cdbc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![book-w200](https://upload-images.jianshu.io/upload_images/9381131-78f431d2f872cdbc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 #### 图书详情
-![bookdetail-w300](https://upload-images.jianshu.io/upload_images/9381131-df01ab77de34516b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![bookdetail-w200](https://upload-images.jianshu.io/upload_images/9381131-df01ab77de34516b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 #### 上传图书
-![bookde-w300](https://upload-images.jianshu.io/upload_images/9381131-42ea017cebf87d70.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![bookde-w200](https://upload-images.jianshu.io/upload_images/9381131-42ea017cebf87d70.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 #### 个人信息
-![info-w300](https://upload-images.jianshu.io/upload_images/9381131-405c8aead67b4911.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![info-w200](https://upload-images.jianshu.io/upload_images/9381131-405c8aead67b4911.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 #### 已上传图书
-![upload-w300](https://upload-images.jianshu.io/upload_images/9381131-08356e882f58e637.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![upload-w200](https://upload-images.jianshu.io/upload_images/9381131-08356e882f58e637.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 

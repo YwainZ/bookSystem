@@ -62,6 +62,9 @@ constructor(props){
          this.setState({rem:true})
     }
   }
+  forget(){
+    hashHistory.push('forget')
+  }
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
@@ -84,7 +87,7 @@ constructor(props){
 
           <Checkbox onChange={this.onAddClick} >记住密码</Checkbox>
 
-          <a className="login-form-forgot" href="" style={{float: 'right'}} >忘记密码</a>
+          <a className="login-form-forgot" style={{float: 'right'}} ><span onClick={this.forget}>忘记密码</span></a>
           <Button type="primary" htmlType="submit" className="login-form-button" style={{width: '100%'}}>
             登陆
           </Button>

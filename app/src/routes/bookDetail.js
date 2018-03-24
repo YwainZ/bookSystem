@@ -38,7 +38,6 @@ class bookDetail extends React.Component {
      this.getBookInfo(1);
    }
   }
-
   getBookInfo(pageNumber) {
     if (pageNumber === undefined || pageNumber === 0 || pageNumber === null) {
       pageNumber = 1;
@@ -131,6 +130,7 @@ class bookDetail extends React.Component {
       }
   }
   catchError(e) {
+    console.log(e.type)
     if (e.type === "error") {
       this.setState({
         imgSrc:
@@ -152,10 +152,10 @@ class bookDetail extends React.Component {
   render() {
     return (
       <div style={{ display: "flex", justifyContent: "flex-start" }}>
-        <div style={{ width: 256 }}>
-          <Menu />
+        <div style={{minHeight:'50rem'}}>
+          <Menu/>
         </div>
-        <div id="contain" style={{ width: "90%", height: "50rem" }}>
+        <div id="contain" style={{ width: "90%", minheight: "50rem" }}>
           <div style={{ margin: "10px" }}>
             <Search
               id="serach"
@@ -186,9 +186,7 @@ class bookDetail extends React.Component {
           </div>
           <div
             style={{
-              position: "absolute",
-              bottom: "0px",
-              left: "500px"
+              margin:'50rem auto auto 15rem'
             }}
           >
             <Pagination

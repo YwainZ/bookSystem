@@ -41,7 +41,7 @@ class NormalLoginForm extends React.Component {
      }).then(data =>{
         if(data.code === 0){
             message.success(data.data);
-            hashHistory.push('/index');
+            hashHistory.push('/');
         }
 
      }).catch(e =>{
@@ -49,6 +49,9 @@ class NormalLoginForm extends React.Component {
        console.log(e)
      })}
     });
+  }
+  back(){
+    hashHistory.push("/");
   }
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -83,8 +86,11 @@ class NormalLoginForm extends React.Component {
         )}
       </FormItem>
         <FormItem>
-          <Button type="primary" htmlType="submit" style={{width:'100%'}} className="login-form-button">
+          <Button type="primary" htmlType="submit" style={{width:'40%'}} className="login-form-button">
             注册
+          </Button>
+          <Button type="normal" style={{width:'40%',float:"right"}} onClick={this.back.bind(this)}>
+            返回
           </Button>
         </FormItem>
       </Form>

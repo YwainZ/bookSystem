@@ -6,7 +6,8 @@ import upload from './routes/uploadBook';
 import info from './routes/info';
 import about from './routes/about';
 import register from './routes/register';
-import uploaded from './routes/uploadedBook'
+import uploaded from './routes/uploadedBook';
+import forget from './routes/forget';
 function RouterConfig({ history }) {
   return (
     <Router history={history}>
@@ -18,6 +19,7 @@ function RouterConfig({ history }) {
         <Route path='/about' exact component={about}/>
         <Route path='/register' exact component={register}/>
         <Route path='/uploaded' exact component={uploaded}/>
+        <Route path='/forget' exact component={forget}/>
       </Switch>
     </Router>
   );

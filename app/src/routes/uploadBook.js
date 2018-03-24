@@ -6,10 +6,10 @@ class UploadBook extends React.Component{
   render(){
     return(
       <div style={{ display: "flex", justifyContent: "flex-start"  }}>
-      <div>
+      <div style={{height:"50rem"}}>
        <Menu/>
       </div>
-      <div style={{height:'50rem',padding:'100px'}}>
+      <div style={{height:'40rem',padding:'10%'}}>
       <Upload/>
       </div>
       </div>

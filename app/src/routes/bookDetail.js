@@ -2,10 +2,10 @@ import React from "react";
 import Menu from "../components/Menu";
 import API_CONFIG from "../config/config";
 import { Pagination } from "antd";
-import { Card } from "antd";
 import { Input } from "antd";
-import { message } from "antd";
-import { hashHistory} from 'react-router';
+import { hashHistory } from "react-router";
+import { List, Card } from "antd";
+
 const Search = Input.Search;
 
 const { Meta } = Card;
@@ -14,36 +14,21 @@ class bookDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      a:[],
-      imgSrc: "",
-      imgTitle: "",
+      a: [],
       num: "",
-      key: 0
+      key: 0,
+      dataList: []
     };
   }
 
   onChange = (pageNumber, pageSize) => {
-    var contain = document.getElementById("cardBox");
-    var card = document.getElementById("card");
-    card.style.display = "block";
-    contain.innerHTML = "";
-    contain.appendChild(card);
-    this.componentDidMount(pageNumber);
+    this.getBookInfo(pageNumber);
   };
-  componentDidMount(temp) {
-    if(typeof(temp)==="string"){
-       this.getBookInfo(temp);
-    }
-   else{
-     this.getBookInfo(1);
-   }
+  componentDidMount() {
+    this.getBookInfo(1);
   }
   getBookInfo(pageNumber) {
-    if (pageNumber === undefined || pageNumber === 0 || pageNumber === null) {
-      pageNumber = 1;
-    }
-    if(typeof (pageNumber)=== "number"){
-      this.setState({ num: pageNumber });
+    console.log("page", pageNumber);
     fetch(
       API_CONFIG.baseUrl +
         "/book/books?pageIndex=" +
@@ -63,74 +48,11 @@ class bookDetail extends React.Component {
         return res.json();
       })
       .then(data => {
-        this.setState({ res: data });
-        var contain = document.getElementById("cardBox");
-        var card = document.getElementById("card");
-        let arr = data.data;
-        if (arr === undefined || arr.length === 0) {
-          card.style.display = "none";
-          message.error("暂无更多图书");
-        }
-        contain.innerHTML = "";
-        for (let i = 0; i < arr.length; i++) {
-          this.setState({ imgTitle: arr[i].bookName });
-          this.setState({ imgSrc: arr[i].coverUrl });
-          var clone = card.cloneNode(true);
-          contain.appendChild(clone);
-
-        }
-        for(let i = 0; i<contain.childNodes.length; i++){
-           contain.childNodes[i].addEventListener('click',function(){
-             hashHistory.push({pathname:'/about',query:{name:arr[i].id}})
-           })
-        }
-      })
-      .catch(e => {
-        console.log(e);
-      });}
-      else if(typeof(pageNumber)==="string"){
-        fetch(
-          API_CONFIG.baseUrl +
-            "/book/books?pageIndex=1&pageSize=10&key="+pageNumber,
-          {
-            method: "GET",
-            mode: "cors",
-            credentials: "include",
-            cache: "default",
-            headers: {
-              "Content-Type": "application/json"
-            }
-          }
-        )
-          .then(res => {
-            return res.json();
-          })
-          .then(data => {
-            var contain = document.getElementById("cardBox");
-            var card = document.getElementById("card");
-            var title = document.getElementsByClassName("ant-card-meta-title")[0];
-            let arr = data.data;
-            var img = card.getElementsByTagName("img")[0];
-            contain.innerHTML = "";
-            for(let i =0; i<arr.length; i++){
-              img.src = arr[i].coverUrl;
-              title.innerHTML = arr[i].bookName;
-              var clone = card.cloneNode(true);
-              contain.appendChild(clone);
-            }
-            for(let i = 0; i<contain.childNodes.length; i++){
-              contain.childNodes[i].addEventListener('click',function(){
-                hashHistory.push({pathname:'/about',query:{name:arr[i].id}})
-              })
-           }
-          })
-          .catch(e => {
-            console.log(e);
-          });
-      }
+        console.log("data", data);
+        this.setState({ dataList: data.data.bookList });
+      });
   }
   catchError(e) {
-    console.log(e.type)
     if (e.type === "error") {
       this.setState({
         imgSrc:
@@ -142,18 +64,36 @@ class bookDetail extends React.Component {
     console.log(e);
   }
 
-  onSearch = ()=> {
+  onSearch = () => {
     var book = document.getElementById("serach").value;
-    if(book!==null||book.length!==0){
-         this.componentDidMount(book);
-    }
+    fetch(
+      API_CONFIG.baseUrl +
+        "/book/books?pageIndex=1&pageSize=10&key="+book,
+      {
+        method: "GET",
+        mode: "cors",
+        credentials: "include",
+        cache: "default",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    )
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+        this.setState({ dataList: data.data.bookList });
+        console.log('search',data)
+      })
+
   };
 
   render() {
     return (
       <div style={{ display: "flex", justifyContent: "flex-start" }}>
-        <div style={{minHeight:'50rem'}}>
-          <Menu/>
+        <div style={{ minHeight: "70rem" }}>
+          <Menu />
         </div>
         <div id="contain" style={{ width: "90%", minheight: "50rem" }}>
           <div style={{ margin: "10px" }}>
@@ -166,33 +106,47 @@ class bookDetail extends React.Component {
             />
           </div>
           <div id="cardBox">
-            <Card
-              id="card"
-              className = {this.state.key}
-              hoverable
-              style={{ width: 200, float: "left", height: 330, margin: 10 }}
-              cover={
-                <img
-                  id="bookImage"
-                  style={{ width: 200, height: 280 }}
-                  alt="example"
-                  src={this.state.imgSrc}
-                  onError={this.catchError.bind(this)}
-                />
-              }
-            >
-              <Meta title={this.state.imgTitle} />
-            </Card>
+            <List
+              grid={{ gutter: 10, column: 4 }}
+              dataSource={this.state.dataList}
+              renderItem={item => (
+                <List.Item>
+                  <Card
+                    onClick = {()=>{ hashHistory.push({pathname:'/about',query:{name:item.id}})}}
+                    id="card"
+                    className={this.state.key}
+                    hoverable
+                    style={{
+                      width: 200,
+                      float: "left",
+                      height: 320,
+                      margin: 10
+                    }}
+                    cover={
+                      <img
+                        id={item.id}
+                        style={{ width: 200, height: 260 }}
+                        alt={item.bookName}
+                        src={item.coverUrl}
+                        onError={this.catchError.bind(this)}
+                      />
+                    }
+                  >
+                    <Meta title={item.bookName} style={{textAlign:'center'}} />
+                  </Card>
+                </List.Item>
+              )}
+            />
           </div>
           <div
             style={{
-              margin:'50rem auto auto 15rem'
+              margin: "10rem auto auto 15rem"
             }}
           >
             <Pagination
               showQuickJumper
               defaultCurrent={1}
-              total={Number(this.state.num)}
+              total={50}
               onChange={this.onChange}
             />
           </div>

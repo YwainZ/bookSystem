@@ -5,7 +5,7 @@ class Uploaded extends React.Component{
    render(){
      return(
        <div style={{display:'flex',justifyContent:'flex-start'}}>
-       <div >
+       <div style={{ minHeight: "70rem" }}>
        <Menu/>
        </div>
        <div style={{height:'50rem',margin:30,width:'90%'}}>

@@ -27,8 +27,9 @@ class TableInfo extends React.Component {
         return res.json();
       })
       .then(res => {
+        console.log(res)
         var arr = res.data;
-        if (res.data.length === 0 || res.data === null) {
+        if (arr.length === 0 || arr === null) {
           this.setState({resource:[]})
         } else {
           for (let i = 0; i < arr.length; i++) {

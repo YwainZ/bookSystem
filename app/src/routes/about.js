@@ -4,7 +4,7 @@ import fetch from "isomorphic-fetch";
 import API_CONFIG from "../config/config";
 import { Card } from "antd";
 import { Rate, Button, Divider, Input, message } from "antd";
-import { List, Icon } from "antd";
+import { List} from "antd";
 class About extends React.Component {
   listData = [];
   constructor(props) {
@@ -64,6 +64,7 @@ class About extends React.Component {
           });
         }
         for (let i = 0; i < res.data.comments.length; i++) {
+          this.listData = [];
           this.listData.push({
             title: res.data.comments[i].nickname,
             content: res.data.comments[i].content,
@@ -151,16 +152,10 @@ class About extends React.Component {
       total: this.listData.length,
       onChange: () => {}
     };
-    const IconText = ({ type, text }) => (
-      <span>
-        <Icon type={type} style={{ marginRight: 8 }} />
-        {text}
-      </span>
-    );
 
     return (
       <div style={{ display: "flex", justifyContent: "flex-start" }}>
-        <div style={{ minHeight: "50rem" }}>
+        <div style={{ minHeight: "70rem" }}>
           <Menu />
         </div>
         <div

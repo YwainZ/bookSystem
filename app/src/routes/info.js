@@ -5,7 +5,7 @@ import UserInfo from '../components/userInfo';
    render(){
      return (
        <div style={{display:'flex',justifyContent:'flex-start'}}>
-       <div>
+       <div style={{ minHeight: "70rem" }}>
        <Menu/>
        </div>
        <div style={{margin:20,width:'90%',height:'50rem'}}>

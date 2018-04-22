@@ -27,7 +27,6 @@ class TableInfo extends React.Component {
         return res.json();
       })
       .then(res => {
-        console.log(res)
         var arr = res.data;
         if (arr.length === 0 || arr === null) {
           this.setState({resource:[]})
@@ -54,10 +53,8 @@ class TableInfo extends React.Component {
         return res.json();
       })
       .then(res => {
-        console.log(res);
         message.success(res.data);
       });
-    console.log(e.key);
   }
   columns = [
     { title: "书名", dataIndex: "bookName", key: "bookName" },

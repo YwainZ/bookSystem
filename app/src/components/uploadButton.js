@@ -14,11 +14,7 @@ class UploadButton extends React.Component{
     withCredentials: true,
     action: API_CONFIG.baseUrl+'/book/books',
     onChange(info) {
-      console.log(info.fileList[0]);
       const status = info.file.status;
-      if (status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
       if (status === 'done') {
         message.success(`${info.file.name} file uploaded successfully.`);
       } else if (status === 'error') {

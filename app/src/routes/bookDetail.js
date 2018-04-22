@@ -9,8 +9,9 @@ import { List, Card } from "antd";
 const Search = Input.Search;
 
 const { Meta } = Card;
-
+let number=1;
 class bookDetail extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -18,26 +19,28 @@ class bookDetail extends React.Component {
       num: "",
       key: 0,
       dataList: [],
-      pageNumber: 1
+      value:undefined
     };
-  }
 
+
+
+  }
   onChange = (pageNumber, pageSize) => {
-    this.setState({ pageNumber: pageNumber });
+    number = pageNumber;
+    this.getBookInfo(this.state.value);
   };
   componentDidMount() {
     this.getBookInfo();
   }
   getBookInfo(value) {
-    console.log("vbalue", value);
+    this.setState({value: value})
     let url =
       API_CONFIG.baseUrl +
       "/book/books?pageIndex=" +
-      this.state.pageNumber +
+      number +
       "&pageSize=8";
     if (value !== undefined) {
-      console.log('2')
-      url = API_CONFIG.baseUrl +  "/book/books?pageIndex=" +this.state.pageNumber + "&pageSize=8&key=" +value;
+      url = API_CONFIG.baseUrl +  "/book/books?pageIndex=" +number+ "&pageSize=8&key=" +value;
     }
 
     fetch(url, {
@@ -53,10 +56,8 @@ class bookDetail extends React.Component {
         return res.json();
       })
       .then(data => {
-        console.log("data", data);
         this.setState({ dataList: data.data.bookList });
         this.setState({ num: data.data.total });
-        console.log('total', data.data.total)
       });
   }
   catchError(e) {
@@ -67,9 +68,7 @@ class bookDetail extends React.Component {
       });
     }
   }
-  handleClick(e) {
-    console.log(e);
-  }
+  
 
   render() {
     return (
@@ -83,7 +82,7 @@ class bookDetail extends React.Component {
               id="serach"
               style={{ width: "25%" }}
               placeholder="搜索图书"
-              onSearch={value => this.getBookInfo(value)}
+              onSearch={value => {this.getBookInfo(value)}}
               enterButton
             />
           </div>

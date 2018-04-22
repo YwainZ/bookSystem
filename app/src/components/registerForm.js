@@ -46,7 +46,6 @@ class NormalLoginForm extends React.Component {
 
      }).catch(e =>{
        message.error("注册失败");
-       console.log(e)
      })}
     });
   }

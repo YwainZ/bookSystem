@@ -31,7 +31,6 @@ class MenuDetail extends React.Component {
          else{
            message.error(res.msg)
          }
-         console.log(res)
        }).catch(e =>{
          console.log(e)
        })

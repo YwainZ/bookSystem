@@ -24,7 +24,6 @@ constructor(props){
 }
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log('hahahh'+this.state.rem)
     this.props.form.validateFields((err, values) => {
       fetch(API_CONFIG.baseUrl+'/user/login',{
         mode:'cors',
@@ -38,7 +37,6 @@ constructor(props){
       }).then(res =>{
         return res.json()
       }).then(res =>{
-        console.log(res)
         if(res.code===0){
           message.success("登录成功")
          hashHistory.push('/book')
@@ -47,7 +45,6 @@ constructor(props){
         }
       }).catch(e =>{
         message.error('登录失败')
-        console.log(e)
       })
 
 
@@ -57,7 +54,6 @@ constructor(props){
     hashHistory.push('/register')
   }
   onAddClick = (e) =>{
-    console.log(e.target.checked)
     if(e.target.checked===true){
          this.setState({rem:true})
     }

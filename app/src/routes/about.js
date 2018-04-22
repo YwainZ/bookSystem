@@ -57,7 +57,6 @@ class About extends React.Component {
         return res.json();
       })
       .then(res => {
-        console.log(res.data);
         if (res.data.comments.length === 0) {
           this.listData.push({
             title: "暂无评论"
@@ -108,7 +107,6 @@ class About extends React.Component {
       bookId: parseInt(this.state.id),
       score: this.state.stars
     };
-    console.log(res);
     fetch(API_CONFIG.baseUrl + "/comment/comments", {
       mode: "cors",
       credentials: "include",
@@ -122,7 +120,6 @@ class About extends React.Component {
         return res.json();
       })
       .then(res => {
-        console.log(res)
         if(res.code===1){
           message.error("不能重复评论哦～");
         }else
@@ -140,7 +137,6 @@ class About extends React.Component {
       })
       .catch(e => {
         message.error(e.msg+"，不能评论哦～");
-        console.log(e);
       });
   };
   render() {

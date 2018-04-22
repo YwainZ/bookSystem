@@ -19,7 +19,6 @@ class ForgetForm extends React.Component{
         }).then(res =>{
           return res.json()
         }).then(res =>{
-          console.log(values)
           if(values.mail!==undefined&&res.code===-5){
            message.error(res.msg);
           }
@@ -27,7 +26,6 @@ class ForgetForm extends React.Component{
             message.success("修改成功");
             hashHistory.push("/");
           }
-          console.log(res)
         })
       }
     );

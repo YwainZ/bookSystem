@@ -17,39 +17,46 @@ class bookDetail extends React.Component {
       a: [],
       num: "",
       key: 0,
-      dataList: []
+      dataList: [],
+      pageNumber: 1
     };
   }
 
   onChange = (pageNumber, pageSize) => {
-    this.getBookInfo(pageNumber);
+    this.setState({ pageNumber: pageNumber });
   };
   componentDidMount() {
-    this.getBookInfo(1);
+    this.getBookInfo();
   }
-  getBookInfo(pageNumber) {
-    console.log("page", pageNumber);
-    fetch(
+  getBookInfo(value) {
+    console.log("vbalue", value);
+    let url =
       API_CONFIG.baseUrl +
-        "/book/books?pageIndex=" +
-        pageNumber +
-        "&pageSize=10",
-      {
-        method: "GET",
-        mode: "cors",
-        credentials: "include",
-        cache: "default",
-        headers: {
-          "Content-Type": "application/json"
-        }
+      "/book/books?pageIndex=" +
+      this.state.pageNumber +
+      "&pageSize=8";
+    if (value !== undefined) {
+      console.log('2')
+      url = API_CONFIG.baseUrl +  "/book/books?pageIndex=" +this.state.pageNumber + "&pageSize=8&key=" +value;
+    }
+
+    fetch(url, {
+      method: "GET",
+      mode: "cors",
+      credentials: "include",
+      cache: "default",
+      headers: {
+        "Content-Type": "application/json"
       }
-    )
+    })
       .then(res => {
         return res.json();
       })
       .then(data => {
         console.log("data", data);
         this.setState({ dataList: data.data.bookList });
+        this.setState({ num: data.data.total });
+        console.log('total', data.data.total)
       });
   }
   catchError(e) {
@@ -64,31 +71,6 @@ class bookDetail extends React.Component {
     console.log(e);
   }
 
-  onSearch = () => {
-    var book = document.getElementById("serach").value;
-    fetch(
-      API_CONFIG.baseUrl +
-        "/book/books?pageIndex=1&pageSize=10&key="+book,
-      {
-        method: "GET",
-        mode: "cors",
-        credentials: "include",
-        cache: "default",
-        headers: {
-          "Content-Type": "application/json"
-        }
-      }
-    )
-      .then(res => {
-        return res.json();
-      })
-      .then(data => {
-        this.setState({ dataList: data.data.bookList });
-        console.log('search',data)
-      })
-
-  };
-
   render() {
     return (
       <div style={{ display: "flex", justifyContent: "flex-start" }}>
@@ -101,7 +83,7 @@ class bookDetail extends React.Component {
               id="serach"
               style={{ width: "25%" }}
               placeholder="搜索图书"
-              onSearch={this.onSearch}
+              onSearch={value => this.getBookInfo(value)}
               enterButton
             />
           </div>
@@ -112,7 +94,12 @@ class bookDetail extends React.Component {
               renderItem={item => (
                 <List.Item>
                   <Card
-                    onClick = {()=>{ hashHistory.push({pathname:'/about',query:{name:item.id}})}}
+                    onClick={() => {
+                      hashHistory.push({
+                        pathname: "/about",
+                        query: { name: item.id }
+                      });
+                    }}
                     id="card"
                     className={this.state.key}
                     hoverable
@@ -132,7 +119,10 @@ class bookDetail extends React.Component {
                       />
                     }
                   >
-                    <Meta title={item.bookName} style={{textAlign:'center'}} />
+                    <Meta
+                      title={item.bookName}
+                      style={{ textAlign: "center" }}
+                    />
                   </Card>
                 </List.Item>
               )}
@@ -146,7 +136,7 @@ class bookDetail extends React.Component {
             <Pagination
               showQuickJumper
               defaultCurrent={1}
-              total={50}
+              total={this.state.num * 10}
               onChange={this.onChange}
             />
           </div>
